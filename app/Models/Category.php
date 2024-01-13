@@ -11,6 +11,11 @@ class Category extends Model
 
     protected $guarded = [];
 
+    public function restaurants()
+    {
+        return $this->belongsToMany(Restaurant::class,'rests_cats','category_id','restaurant_id');
+    }
+
     public function scopeFilterOn($query)
     {
         if (request('name')) {

@@ -61,6 +61,10 @@ class AuthController extends Controller
         $user = User::where('name', $request->credentials)
             ->orWhere('phone', $request->credentials)->first();
 
+        if ($user->tokens()->where('tokenable_id', $user->id)->exists()) {
+            $user->tokens()->delete();
+        }
+
         if (!$user || !Hash::check($request->password, $user->password)) {
             return response()->json([
                 'message' => 'These Credentials do not match.'

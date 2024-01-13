@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\V1\Admin\CategoryController;
+use App\Http\Controllers\V1\Admin\RestaurantController;
 use App\Http\Controllers\V1\Admin\RoleController;
 use App\Http\Controllers\V1\AuthController;
 use Illuminate\Support\Facades\Route;
@@ -15,4 +16,5 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
 
     //categories
     Route::apiResource('/categories', CategoryController::class);
+    Route::apiResource('/restaurants', RestaurantController::class);
 });
