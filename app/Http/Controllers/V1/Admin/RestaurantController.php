@@ -31,7 +31,7 @@ class RestaurantController extends Controller
     public function store(RestaurantRequest $request)
     {
 
-        $response = $this->restSvc->store($request->all());
+        $response = $this->restSvc->store($request->validated());
 
         $restaurant = new RestaurantResource($response);
 
@@ -40,7 +40,7 @@ class RestaurantController extends Controller
 
     public function update(RestaurantRequest $request, $id)
     {
-        $response = $this->restSvc->update($request->all(), $id);
+        $response = $this->restSvc->update($request->validated(), $id);
 
         $restaurant = new RestaurantResource($response);
 
