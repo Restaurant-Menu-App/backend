@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\MenuRequest;
 use App\Http\Resources\V1\MenuResource;
 use App\Models\Menu;
+use App\Services\MediaService;
 use App\Services\MenuService;
 use Illuminate\Http\Request;
 
@@ -13,9 +14,12 @@ class MenuController extends Controller
 {
 
     private $menuSvc;
-    public function __construct(MenuService $menuSvc)
+    private $mediaSvc;
+
+    public function __construct(MenuService $menuSvc, MediaService $mediaSvc)
     {
         $this->menuSvc = $menuSvc;
+        $this->mediaSvc = $mediaSvc;
     }
 
     /**
@@ -36,6 +40,19 @@ class MenuController extends Controller
     public function store(MenuRequest $request)
     {
         $response = $this->menuSvc->store($request->validated());
+
+        if ($request->file('medias')) {
+            $mediaFormdata = [
+                'medias' => $request->file('medias'),
+                'type' => 'menus',
+            ];
+
+            $medias = $this->mediaSvc->storeMultiMedia($mediaFormdata);
+
+            $response->medias()->sync($medias);
+        } else {
+            $media = null;
+        }
 
         $restaurant = new MenuResource($response);
 
