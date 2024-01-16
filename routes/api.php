@@ -18,5 +18,11 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
     //categories
     Route::apiResource('/categories', CategoryController::class);
     Route::apiResource('/restaurants', RestaurantController::class);
-    Route::apiResource('/menus', MenuController::class);
+
+    Route::controller(MenuController::class)->group(function () {
+        Route::get('/menus', 'index');
+        Route::post('/menus', 'store');
+        Route::post('/menus/{menu}', 'update');
+        Route::delete('/menus/{menu}', 'destroy');
+    });
 });

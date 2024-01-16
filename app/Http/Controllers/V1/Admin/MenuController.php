@@ -28,7 +28,7 @@ class MenuController extends Controller
     public function index()
     {
         $perPage = request('per_page', 10);
-        $menus = Menu::with(['restaurant', 'category'])->latest()->paginate($perPage);
+        $menus = Menu::with(['restaurant', 'category', 'medias'])->latest()->paginate($perPage);
 
         $menus = MenuResource::collection($menus)->response()->getData(true);
         return response()->json($menus, 200);
@@ -51,20 +51,12 @@ class MenuController extends Controller
 
             $response->medias()->sync($medias);
         } else {
-            $media = null;
+            $medias = null;
         }
 
-        $restaurant = new MenuResource($response);
+        $restaurant = new MenuResource($response->loadMissing(['category', 'medias']));
 
         return $this->sendResponse($restaurant, 'Success!');
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Menu $menu)
-    {
-        //
     }
 
     /**
@@ -74,7 +66,20 @@ class MenuController extends Controller
     {
         $response = $this->menuSvc->update($request->validated(), $id);
 
-        $menu = new MenuResource($response);
+        if ($request->hasFile('medias')) {
+            $mediaFormdata = [
+                'medias' => $request->file('medias'),
+                'type' => 'menus',
+            ];
+
+            $medias = $this->mediaSvc->storeMultiMedia($mediaFormdata);
+
+            $response->medias()->sync($medias);
+        } else {
+            $medias = $response->medias;
+        }
+
+        $menu = new MenuResource($response->loadMissing('category'));
 
         return $this->sendResponse($menu, 'Success');
     }
@@ -84,6 +89,12 @@ class MenuController extends Controller
      */
     public function destroy(Menu $menu)
     {
+        if ($menu->medias->count()) {
+            foreach ($menu->medias as $media) {
+                $media = $this->mediaSvc->destroyMedia($media->id);
+            }
+        }
+        
         $menu->delete();
 
         return $this->sendResponse([], 'Deleted!');

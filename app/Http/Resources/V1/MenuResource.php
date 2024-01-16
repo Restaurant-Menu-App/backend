@@ -24,7 +24,7 @@ class MenuResource extends JsonResource
             'join_at' => $this->created_at->diffForHumans(),
             'category' => new CategoryResource($this->whenLoaded('category')),
             'restaurant' => new RestaurantResource($this->whenLoaded('restaurant')),
-
+            'medias' => MediaResource::collection($this->whenLoaded('medias'))
             //image
         ];
     }
