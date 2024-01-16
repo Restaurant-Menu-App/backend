@@ -28,7 +28,8 @@ class MenuRequest extends FormRequest
             'priority' => 'nullable|integer|max:5',
             'restaurant' => 'required|numeric|exists:restaurants,id',
             'category' => 'required|numeric|exists:categories,id',
-            //image
+            'medias' => 'nullable',
+            'medias.*' => 'mimes:jpg,jpeg,png|max:102400',
         ];
     }
 }
