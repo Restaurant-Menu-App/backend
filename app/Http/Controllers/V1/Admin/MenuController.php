@@ -41,7 +41,7 @@ class MenuController extends Controller
     {
         $response = $this->menuSvc->store($request->validated());
 
-        if ($request->file('medias')) {
+        if ($request->hasFile('medias')) {
             $mediaFormdata = [
                 'medias' => $request->file('medias'),
                 'type' => 'menus',
@@ -54,9 +54,9 @@ class MenuController extends Controller
             $medias = null;
         }
 
-        $restaurant = new MenuResource($response->loadMissing(['category', 'medias']));
+        $menu = new MenuResource($response->loadMissing(['category', 'medias']));
 
-        return $this->sendResponse($restaurant, 'Success!');
+        return $this->sendResponse($menu, 'Success!');
     }
 
     /**
@@ -81,7 +81,7 @@ class MenuController extends Controller
 
         $menu = new MenuResource($response->loadMissing('category'));
 
-        return $this->sendResponse($menu, 'Success');
+        return $this->sendResponse($menu, 'Success!');
     }
 
     /**
