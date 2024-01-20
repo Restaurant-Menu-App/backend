@@ -7,9 +7,6 @@ use App\Http\Requests\V1\RestaurantRequest;
 use App\Http\Resources\V1\RestaurantResource;
 use App\Models\Restaurant;
 use App\Services\RestaurantService;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str;
 
 class RestaurantController extends Controller
 {
@@ -30,7 +27,6 @@ class RestaurantController extends Controller
 
     public function store(RestaurantRequest $request)
     {
-
         $response = $this->restSvc->store($request->validated());
 
         $restaurant = new RestaurantResource($response);

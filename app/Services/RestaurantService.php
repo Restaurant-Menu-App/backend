@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Restaurant;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class RestaurantService
@@ -11,6 +12,22 @@ class RestaurantService
     public function store(array $params = [])
     {
         try {
+
+            if ($params['image']) {
+                $file = $params['image'];
+                $fileNameWithExt = $file->getClientOriginalName();
+                $fileName = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
+                $fileNameToStore = $fileName . '_' . time() . '.' . $file->extension();
+
+                $url = $file->storeAs('public', $fileNameToStore);
+
+                $fileName = $fileName . '.' . $file->extension();
+
+                Storage::move($url, 'public/restaurants/' . $fileNameToStore); //tmp
+
+                $url = Storage::url('public/restaurants/' . $fileNameToStore);
+            }
+
             $restaurant = Restaurant::create([
                 "slug" => Str::slug($params['name']),
                 "name" => $params['name'],
@@ -24,7 +41,7 @@ class RestaurantService
                 "close_time" => $params['close_time'] ?? null,
                 "close_on" => $params['close_on'] ?? null,
                 "user_id" => Auth::id(),
-                //image
+                "image" => $url ?? null
             ]);
 
             $restaurant->categories()->sync($params['categories']);
@@ -44,7 +61,7 @@ class RestaurantService
             $restaurant->slug = Str::slug($params['name']);
             $restaurant->name = $params['name'];
             $restaurant->phone = $params['phone'];
-            $restaurant->email = $params['email'] ?? null ;
+            $restaurant->email = $params['email'] ?? null;
             $restaurant->website_url = $params['website_url'] ?? null;
             $restaurant->facebook_url = $params['facebook_url'] ?? null;
             $restaurant->address = $params['address'] ?? null;

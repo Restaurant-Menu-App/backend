@@ -17,7 +17,7 @@ class Media extends Model
     {
         return $this->morphedByMany(Media::class, 'mediabble');
     }
-
+    
     // scope function
     public function scopeIsType($query, $type)
     {

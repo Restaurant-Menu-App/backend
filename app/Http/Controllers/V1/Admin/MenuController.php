@@ -8,7 +8,6 @@ use App\Http\Resources\V1\MenuResource;
 use App\Models\Menu;
 use App\Services\MediaService;
 use App\Services\MenuService;
-use Illuminate\Http\Request;
 
 class MenuController extends Controller
 {
@@ -79,7 +78,7 @@ class MenuController extends Controller
             $medias = $response->medias;
         }
 
-        $menu = new MenuResource($response->loadMissing('category'));
+        $menu = new MenuResource($response->loadMissing(['category','medias']));
 
         return $this->sendResponse($menu, 'Success!');
     }

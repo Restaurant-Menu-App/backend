@@ -16,21 +16,6 @@ class MediaService
         try {
             DB::beginTransaction();
 
-            $max_size = env('MAX_FILE_SIZE', 102400);
-            $this->rules = [
-                'media' => 'mimes:jpg,jpeg,png|max:' . $max_size,
-            ];
-
-            $validator = Validator::make($formData, $this->rules);
-
-            if ($validator->fails()) {
-                return [
-                    'status' => false,
-                    'message' => 'Validation failed!',
-                    'errors' => $validator->errors(),
-                ];
-            }
-
             $file = $formData['media'];
             $fileNameWithExt = $file->getClientOriginalName();
             $fileName = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
