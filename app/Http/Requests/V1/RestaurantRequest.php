@@ -34,8 +34,9 @@ class RestaurantRequest extends FormRequest
             'close_time' => 'nullable|date',
             'close_on' => 'nullable|string',
             'categories' => 'required|array',
-            'categories.*' => 'numeric|exists:categories,id'
+            'categories.*' => 'numeric|exists:categories,id',
             // image
+            'image' => 'nullable|mimes:jpg,jpeg,png|max:102400',
         ];
     }
 }

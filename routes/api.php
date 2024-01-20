@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
+Route::get('/get-roles', [RoleController::class, 'getRoles']);
+
 Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
     // roles
     Route::get('/get-roles', [RoleController::class, 'getRoles']);
@@ -19,6 +21,7 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
     Route::apiResource('/categories', CategoryController::class);
     Route::apiResource('/restaurants', RestaurantController::class);
 
+    // menus
     Route::controller(MenuController::class)->group(function () {
         Route::get('/menus', 'index');
         Route::post('/menus', 'store');

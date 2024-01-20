@@ -32,7 +32,7 @@ return new class extends Migration
             $table->boolean('is_active')->default(0);
             $table->integer('priority')->default(1);
             $table->longText('desc')->nullable();
-            $table->longText('image')->nullable();
+            $table->string('image')->nullable();
             $table->time('open_time')->nullable();
             $table->time('close_time')->nullable();
             $table->string('close_on')->nullable();

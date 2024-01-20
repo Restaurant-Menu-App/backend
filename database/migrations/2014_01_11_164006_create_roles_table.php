@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('slug');
             $table->string('name');
+            $table->string('type')->default('Operation');
             $table->boolean('disabled')->default(0);
             $table->timestamps();
         });
@@ -23,6 +24,7 @@ return new class extends Migration
             $table->id();
             $table->string('slug')->unique();
             $table->string('name');
+            $table->string('type')->default('setting');
             $table->boolean('disabled')->default(0);
             $table->timestamps();
         });
