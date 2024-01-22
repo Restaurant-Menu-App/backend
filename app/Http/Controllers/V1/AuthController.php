@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\V1\RoleResource;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -73,6 +75,15 @@ class AuthController extends Controller
 
         $token = $user->createToken('restaurant_menus')->plainTextToken;
         return response()->json(['token' => $token], 200);
+    }
+
+    public function getRoles()
+    {
+        $roles = Role::notAdmin()->notDeveloper()->filterOn()->latest()->get();
+
+        $roles = RoleResource::collection($roles);
+
+        return $this->sendResponse($roles, "");
     }
 
     public function logout()

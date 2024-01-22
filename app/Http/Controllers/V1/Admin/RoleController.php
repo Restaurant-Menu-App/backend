@@ -10,12 +10,5 @@ use Illuminate\Support\Str;
 
 class RoleController extends Controller
 {
-    public function getRoles()
-    {
-        $roles = Role::notAdmin()->notDeveloper()->filterOn()->latest()->get();
-
-        $roles = RoleResource::collection($roles);
-
-        return $this->sendResponse($roles, "");
-    }
+    
 }
