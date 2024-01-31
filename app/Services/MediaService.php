@@ -30,17 +30,17 @@ class MediaService
             $url = Storage::url('public/' . $formData['type'] . '/' . $fileNameToStore);
 
             // 2: store media data
-            $media = Media::create([
-                'name' => $fileName,
-                'slug' => $fileNameToStore,
-                'url' => $url,
-                'ext' => $file->extension(),
-                'type' => $formData['type'],
-            ]);
+            // $media = Media::create([
+            //     'name' => $fileName,
+            //     'slug' => $fileNameToStore,
+            //     'url' => $url,
+            //     'ext' => $file->extension(),
+            //     'type' => $formData['type'],
+            // ]);
 
             DB::commit();
 
-            return $media;
+            return $url;
         } catch (\Exception $e) {
             DB::rollBack();
 

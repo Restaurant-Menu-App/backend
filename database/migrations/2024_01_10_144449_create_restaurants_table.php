@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('slug');
             $table->string('name');
             $table->text('desc')->nullable();
+            $table->string('type')->default('restaurant');
             $table->string('image')->nullable();
             $table->timestamps();
         });
