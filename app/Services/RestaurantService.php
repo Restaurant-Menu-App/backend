@@ -5,7 +5,6 @@ namespace App\Services;
 use App\Models\Restaurant;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 
 class RestaurantService
 {
@@ -29,7 +28,6 @@ class RestaurantService
             }
 
             $restaurant = Restaurant::create([
-                "slug" => Str::slug($params['name']),
                 "name" => $params['name'],
                 "phone" => $params['phone'],
                 "email" => $params['email'] ?? null,
@@ -58,7 +56,6 @@ class RestaurantService
     {
         try {
             $restaurant = Restaurant::findOrFail($id);
-            $restaurant->slug = Str::slug($params['name']);
             $restaurant->name = $params['name'];
             $restaurant->phone = $params['phone'];
             $restaurant->email = $params['email'] ?? null;

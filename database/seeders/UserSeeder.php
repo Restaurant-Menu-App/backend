@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Role;
+use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -41,5 +42,7 @@ class UserSeeder extends Seeder
             'slug' => 'user',
             'name' => 'User',
         ]);
+
+        User::factory()->count(10)->create();
     }
 }

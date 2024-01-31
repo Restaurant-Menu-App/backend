@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Models\Menu;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str;
 
 class MenuService
 {
@@ -12,7 +11,6 @@ class MenuService
     {
         try {
             $menu = Menu::create([
-                'slug' => Str::slug($params['name']),
                 'name' => $params['name'],
                 'price' => $params['price'],
                 'desc' => $params['desc'] ?? null,
@@ -36,7 +34,6 @@ class MenuService
         try {
             $menu = Menu::findOrFail($id);
             $menu->update([
-                'slug' => Str::slug($params['name']),
                 'name' => $params['name'],
                 'price' => $params['price'],
                 'desc' => $params['desc'] ?? null,

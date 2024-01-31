@@ -4,6 +4,7 @@ namespace App\Http\Controllers\V1\Site;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\V1\CategoryResource;
+use App\Http\Resources\V1\MenuResource;
 use App\Http\Resources\V1\RestaurantResource;
 use App\Models\Category;
 use App\Models\Restaurant;
@@ -38,5 +39,11 @@ class ApiFrontendController extends Controller
         $restaurants = RestaurantResource::collection($restaurants)->response()->getData(true);
 
         return response()->json($restaurants, 200);
+    }
+
+    public function getMenusByRestaurant(Restaurant $restaurant)
+    {
+        $menus = MenuResource::collection($restaurant->menus->loadMissing(['category', 'medias']))->response()->getData(true);
+        return response()->json($menus, 200);
     }
 }
