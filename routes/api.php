@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Site\ReviewController;
 use App\Http\Controllers\V1\AuthController;
 use App\Http\Controllers\V1\Site\ApiFrontendController;
 use Illuminate\Support\Facades\Route;
@@ -9,16 +10,26 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/get-roles', [AuthController::class, 'getRoles']);
 
-// categoreis
-Route::controller(ApiFrontendController::class)->prefix('v1')->group(function () {
+Route::prefix('v1')->group(function () {
+    // categories
+    Route::controller(ApiFrontendController::class)->group(function () {
 
-    Route::get('/categories/{category}', 'getCategory');
-    Route::get('/categories', 'getCategories');
+        Route::get('/categories/{category}', 'getCategory');
+        Route::get('/categories', 'getCategories');
 
-    // restaurants
-    Route::get('/restaurants/{restaurant}', 'getRestaurant');
-    Route::get('/restaurants', 'getRestaurants');
+        // restaurants
+        Route::get('/restaurants/{restaurant}', 'getRestaurant');
+        Route::get('/restaurants', 'getRestaurants');
 
-    // menu by restaurant
-    Route::get('/restaurants/{restaurant}/menus', 'getMenusByRestaurant');
+        // menu by restaurant
+        Route::get('/restaurants/{restaurant}/menus', 'getMenusByRestaurant');
+    });
+
+    // review restaurants
+    Route::controller(ReviewController::class)->group(function () {
+        Route::get('/restaurants/{restaurant}/reviews', 'restaurantReviews');
+        Route::post('/restaurants/{restaurant}/reviews/store', 'reviewStore')->middleware('auth:sanctum');
+        Route::patch('/restaurants/{restaurant}/reviews/{review}/update', 'reviewUpdate')->middleware('auth:sanctum');
+        Route::delete('/restaurants/{restaurant}/reviews/{review}/destroy', 'reviewDestroy')->middleware('auth:sanctum');
+    });
 });
