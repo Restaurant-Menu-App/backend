@@ -41,4 +41,11 @@ class Menu extends Model
     {
         return $this->morphToMany(Media::class, 'mediabble');
     }
+
+    public function scopeFilterOn($query)
+    {
+        if (request('q')) {
+            $query->where('name', 'like', '%' . request('q') . '%');
+        }
+    }
 }

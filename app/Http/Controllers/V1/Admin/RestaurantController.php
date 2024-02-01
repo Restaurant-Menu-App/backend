@@ -18,7 +18,7 @@ class RestaurantController extends Controller
     public function index()
     {
         $perPage = request('per_page', 10);
-        $restaurants = Restaurant::with(['categories', 'user'])->latest()->paginate($perPage);
+        $restaurants = Restaurant::with(['categories', 'user'])->filterOn()->latest()->paginate($perPage);
 
         $restaurants = RestaurantResource::collection($restaurants)->response()->getData(true);
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Site;
+namespace App\Http\Controllers\Site\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ReviewResource;

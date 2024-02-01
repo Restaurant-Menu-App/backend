@@ -32,8 +32,8 @@ class Category extends Model
 
     public function scopeFilterOn($query)
     {
-        if (request('name')) {
-            $query->where('name', 'like', '%' . request('name') . '%');
+        if (request('q')) {
+            $query->where('name', 'like', '%' . request('q') . '%');
         }
 
         if(request('type')){
