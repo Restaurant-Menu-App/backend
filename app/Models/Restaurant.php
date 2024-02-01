@@ -17,7 +17,7 @@ class Restaurant extends Model
 
     protected $guarded = [];
 
-    public function getSlugOptions() : SlugOptions
+    public function getSlugOptions(): SlugOptions
     {
         return SlugOptions::create()
             ->generateSlugsFrom('name')
@@ -47,5 +47,17 @@ class Restaurant extends Model
     public function reviews(): HasMany
     {
         return $this->hasMany(Review::class);
+    }
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'user_favorites', 'restaurant_id', 'book_id');
+    }
+
+    public function scopeFilterOn($query)
+    {
+        if (request('q')) {
+            $query->where('name', 'like', '%' . request('q') . '%');
+        }
     }
 }
