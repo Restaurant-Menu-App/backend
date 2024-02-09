@@ -1,8 +1,9 @@
 <?php
 
-use App\Http\Controllers\Site\V1\ReviewController;
+use App\Http\Controllers\V1\Site\ReviewController;
 use App\Http\Controllers\V1\AuthController;
 use App\Http\Controllers\V1\Site\ApiFrontendController;
+use App\Http\Controllers\V1\Site\ProfileController;
 use App\Http\Controllers\V1\Site\UserFavoriteController;
 use Illuminate\Support\Facades\Route;
 
@@ -37,8 +38,14 @@ Route::prefix('v1')->group(function () {
     });
 
     // restaurant favorites
-    Route::controller(UserFavoriteController::class)->group(function () {
+    Route::middleware('auth:sanctum')->controller(UserFavoriteController::class)->group(function () {
         Route::post('/add-favorite/{user}/{restaurant}', 'store');
         Route::delete('/remove-favorite/{user}/{restaurant}', 'detach');
+        Route::get('/get-favorites/{user}', 'getFavorites');
+    });
+
+    Route::controller(ProfileController::class)->middleware('auth:sanctum')->group(function () {
+        Route::post('/profile/{user}/update', 'update');
+        Route::post('/profile/{user}/upload-profile', 'upload');
     });
 });

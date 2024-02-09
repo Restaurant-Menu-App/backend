@@ -38,13 +38,13 @@ class ApiFrontendController extends Controller
     // getRestaurant
     public function getRestaurant(Restaurant $restaurant)
     {
-        return new RestaurantResource($restaurant->loadMissing('user'));
+        return new RestaurantResource($restaurant->loadMissing(['user', 'reviews', 'categories']));
     }
 
     public function getRestaurants()
     {
         $perPage = request('per_page', 10);
-        $restaurants = Restaurant::with(['user'])->filterOn()->inRandomOrder()->paginate($perPage);
+        $restaurants = Restaurant::with(['user', 'reviews', 'categories'])->filterOn()->inRandomOrder()->paginate($perPage);
 
         $restaurants = RestaurantResource::collection($restaurants)->response()->getData(true);
 

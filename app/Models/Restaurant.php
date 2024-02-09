@@ -51,7 +51,7 @@ class Restaurant extends Model
 
     public function users()
     {
-        return $this->belongsToMany(User::class, 'user_favorites', 'restaurant_id', 'book_id');
+        return $this->belongsToMany(User::class, 'user_favorites', 'restaurant_id', 'user_id');
     }
 
     public function scopeFilterOn($query)

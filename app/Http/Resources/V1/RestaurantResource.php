@@ -32,6 +32,7 @@ class RestaurantResource extends JsonResource
             'closed' => $this->close_on,
             'owner' => new UserResource($this->whenLoaded('user')),
             'categories' => CategoryResource::collection($this->whenLoaded('categories')),
+            'reviews' => ReviewResource::collection($this->whenLoaded('reviews')),
             'image_url' => $this->image
         ];
     }

@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Site\V1;
+namespace App\Http\Controllers\V1\Site;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\ReviewResource;
+use App\Http\Resources\V1\ReviewResource;
 use App\Models\Restaurant;
 use App\Models\Review;
 use Illuminate\Http\Request;
@@ -14,9 +14,9 @@ class ReviewController extends Controller
     {
         $reviews = $restaurant->reviews()->latest()->paginate();
 
-        $restaurants = ReviewResource::collection($reviews)->response()->getData(true);
+        $restaurant_reviews = ReviewResource::collection($reviews)->response()->getData(true);
 
-        return response()->json($restaurants);
+        return response()->json($restaurant_reviews);
     }
 
     public function reviewStore(Request $request, Restaurant $restaurant)

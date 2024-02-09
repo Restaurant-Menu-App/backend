@@ -4,6 +4,7 @@ namespace App\Http\Controllers\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\V1\RoleResource;
+use App\Http\Resources\V1\UserResource;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -33,7 +34,10 @@ class AuthController extends Controller
 
         if (Auth::attempt($request->only(['phone', 'password']))) {
             $token = Auth::user()->createToken('restaurant_menus')->plainTextToken;
-            return response()->json(['token' => $token], 200);
+            return response()->json([
+                'token' => $token,
+                'user' => new UserResource($user)
+            ], 200);
         }
         return response()->json(['message' => "User Not Found."], 401);
     }
@@ -74,7 +78,10 @@ class AuthController extends Controller
         }
 
         $token = $user->createToken('restaurant_menus')->plainTextToken;
-        return response()->json(['token' => $token], 200);
+        return response()->json([
+            'token' => $token,
+            'user' =>  new UserResource($user)
+        ], 200);
     }
 
     public function getRoles()
