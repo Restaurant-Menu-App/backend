@@ -4,9 +4,8 @@ namespace App\Services;
 
 use App\Models\Media;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Validator;
+use Intervention\Image\Facades\Image;
 
 class MediaService
 {
@@ -21,14 +20,28 @@ class MediaService
             $fileNameWithExt = $file->getClientOriginalName();
             $fileName = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
             $fileNameToStore = $fileName . '_' . time() . '.' . $file->extension();
-
             $url = $file->storeAs('public', $fileNameToStore);
 
-            $fileName = $fileName . '.' . $file->extension();
+            Storage::move($url, 'public/' . $formData['type'] . '/' . $fileNameToStore);
 
-            Storage::move($url, 'public/' . $formData['type'] . '/' . $fileNameToStore); //tmp
+            $thumbnailPath = public_path('storage/' . $formData['type'] . '/' . $fileNameToStore);
 
-            $url = Storage::url('public/' . $formData['type'] . '/' . $fileNameToStore);
+            $img = Image::make($thumbnailPath)->resize(300, 300, function ($constraint) {
+                $constraint->aspectRatio();
+            });
+
+            $img->save($thumbnailPath);
+
+            // //store file
+            // if (!Storage::exists('public/' . $formData['type'])) {
+            //     Storage::makeDirectory('public/' . $formData['type']);
+            // }
+
+            // $url = 'storage/' . $formData['type'] . '/' . $fileNameToStore;
+
+            // $img = Image::make($file);
+            // $file = $img->fit(300, 300);
+            // $file->save($url);
 
             // 2: store media data
             // $media = Media::create([
@@ -39,6 +52,7 @@ class MediaService
             //     'type' => $formData['type'],
             // ]);
 
+            $url = Storage::url('public/' . $formData['type'] . '/' . $fileNameToStore);
             DB::commit();
 
             return $url;
@@ -70,6 +84,14 @@ class MediaService
                 $fileName = $fileName . '.' . $file->extension();
 
                 Storage::move($url, 'public/' . $formData['type'] . '/' . $fileNameToStore); //tmp
+
+                $thumbnailPath = public_path('storage/' . $formData['type'] . '/' . $fileNameToStore);
+
+                $img = Image::make($thumbnailPath)->resize(300, 300, function ($constraint) {
+                    $constraint->aspectRatio();
+                });
+
+                $img->save($thumbnailPath);
 
                 $url = Storage::url('public/' . $formData['type'] . '/' . $fileNameToStore);
 

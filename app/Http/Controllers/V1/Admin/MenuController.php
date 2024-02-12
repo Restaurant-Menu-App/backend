@@ -78,7 +78,7 @@ class MenuController extends Controller
             $medias = $response->medias;
         }
 
-        $menu = new MenuResource($response->loadMissing(['category','medias']));
+        $menu = new MenuResource($response->loadMissing(['category', 'medias']));
 
         return $this->sendResponse($menu, 'Success!');
     }
@@ -93,7 +93,7 @@ class MenuController extends Controller
                 $media = $this->mediaSvc->destroyMedia($media->id);
             }
         }
-        
+
         $menu->delete();
 
         return $this->sendResponse([], 'Deleted!');
