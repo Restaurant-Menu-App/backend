@@ -45,7 +45,8 @@ Route::prefix('v1')->group(function () {
     });
 
     Route::controller(ProfileController::class)->middleware('auth:sanctum')->group(function () {
-        Route::post('/profile/{user}/update', 'update');
-        Route::post('/profile/{user}/upload-profile', 'upload');
+        Route::patch('/profile/update', 'update');
+        Route::post('/profile/upload-profile', 'upload');
+        Route::patch('/profile/change-password', 'changePassword');
     });
 });

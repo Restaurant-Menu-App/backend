@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Media;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
