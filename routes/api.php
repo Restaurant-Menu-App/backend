@@ -41,7 +41,7 @@ Route::prefix('v1')->group(function () {
     Route::middleware('auth:sanctum')->controller(UserFavoriteController::class)->group(function () {
         Route::post('/add-favorite/{user}/{restaurant}', 'store');
         Route::delete('/remove-favorite/{user}/{restaurant}', 'detach');
-        Route::get('/get-favorites/{user}', 'getFavorites');
+        Route::get('/get-favorites', 'getFavorites');
     });
 
     Route::controller(ProfileController::class)->middleware('auth:sanctum')->group(function () {

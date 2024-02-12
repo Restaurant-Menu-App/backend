@@ -34,8 +34,9 @@ class UserFavoriteController extends Controller
         return $this->sendResponse([], 'Removed from Favorites');
     }
 
-    public function getFavorites(User $user)
+    public function getFavorites()
     {
+        $user = User::with('restaurant_favorites')->findOrFail(Auth::id());
         $restaurants = RestaurantResource::collection($user->restaurant_favorites);
 
         return $this->sendResponse($restaurants, "");
